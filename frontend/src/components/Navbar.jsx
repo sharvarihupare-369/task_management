@@ -38,7 +38,8 @@ const Navbar = ({ onCreateTaskClick }) => {
             className="flex items-center bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100"
             onClick={onCreateTaskClick}
           >
-            <FaPlus className="mr-2" />
+            Create Task
+            {/* <FaPlus className="mr-2" /> */}
           </button>
           {token && (
             <button
