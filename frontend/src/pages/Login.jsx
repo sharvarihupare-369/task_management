@@ -1,19 +1,52 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../utils/http";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { setToken, setUsername } = useContext(AuthContext);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const userData = { email, password };
+    try {
+      const res = await loginUser(userData);
+      // console.log(res,"res");
+      if (res.token) {
+        toast.success(res.message);
+        setToken(res.token);
+        setUsername(res.username);
+        setEmail("");
+        setPassword("");
+        setTimeout(() => {
+          navigate("/");
+        }, 4000);
+      } 
+      if(!res.token){
+        toast.error(res);
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <h2 className="text-2xl font-bold text-gray-800 text-center">Login</h2>
-        <form className="mt-6">
+        <form className="mt-6" onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="text-left text-md font-medium text-gray-700">
               Email
             </label>
             <input
               type="email"
-              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your email"
             />
@@ -24,7 +57,8 @@ const Login = () => {
             </label>
             <input
               type="password"
-              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your password"
             />
@@ -43,6 +77,7 @@ const Login = () => {
           </Link>
         </p>
       </div>
+      <ToastContainer autoClose={3000} />
     </div>
   );
 };

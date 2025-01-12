@@ -1,26 +1,54 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../utils/http";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const userData = { name, email, password };
+    try {
+      const response = await registerUser(userData);
+      if (response === "User registered successfully") {
+        toast.success(response);
+        setName("");
+        setEmail("");
+        setPassword("");
+        setTimeout(() => {
+          navigate("/login");
+        }, 5000);
+      } else {
+        toast.error(response);
+      }
+    } catch (error) {
+      toast.error(error);
+      console.error("Error registering user:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <h2 className="text-2xl font-bold text-gray-800 text-center">
           Sign Up
         </h2>
-        <form className="mt-6">
+        <form className="mt-6" onSubmit={handleRegister}>
           <div className="mb-4">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name  
+            <label className="block text-sm font-medium text-gray-700">
+              Name
             </label>
             <input
               type="text"
-              id="username"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter your username"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -29,9 +57,10 @@ const Signup = () => {
             </label>
             <input
               type="email"
-              id="email"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
@@ -40,14 +69,15 @@ const Signup = () => {
             </label>
             <input
               type="password"
-              id="password"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500  text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md transition duration-300"
           >
             Sign Up
           </button>
@@ -59,6 +89,7 @@ const Signup = () => {
           </Link>
         </p>
       </div>
+      <ToastContainer autoClose={3000} />
     </div>
   );
 };
