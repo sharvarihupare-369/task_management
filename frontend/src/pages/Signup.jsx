@@ -40,7 +40,7 @@ const Signup = () => {
         </h2>
         <form className="mt-6" onSubmit={handleRegister}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="flex text-sm font-medium text-gray-700">
               Name
             </label>
             <input
@@ -52,7 +52,7 @@ const Signup = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="align-left text-sm font-medium text-gray-700">
+            <label className="flex text-sm font-medium text-gray-700">
               Email
             </label>
             <input
@@ -64,7 +64,7 @@ const Signup = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="flex text-sm font-medium text-gray-700">
               Password
             </label>
             <input

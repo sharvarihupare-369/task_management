@@ -40,7 +40,7 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-gray-800 text-center">Login</h2>
         <form className="mt-6" onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="text-left text-md font-medium text-gray-700">
+            <label className="flex  text-md font-medium text-gray-700">
               Email
             </label>
             <input
@@ -52,7 +52,7 @@ const Login = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="text-left text-md font-medium text-gray-700">
+            <label className="flex text-md font-medium text-gray-700">
               Password
             </label>
             <input
