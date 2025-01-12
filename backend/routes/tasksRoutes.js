@@ -6,6 +6,9 @@ const router = express.Router();
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
+    if(!req.body.due_date){
+      return res.status(400).send({message:"Due date required!"})
+    }
     const task = await TaskModel.create({ ...req.body, userId: userId });
     res.status(200).send({ message: "Task Created Successfully!", task });
   } catch (error) {
@@ -25,7 +28,7 @@ router.get("/", authMiddleware, async (req, res) => {
     const filters = { userId };
     if (status) filters.status = status;
     if (priority) filters.priority = priority;
-    const tasks = await TaskModel.find({ filters }).sort({
+    const tasks = await TaskModel.find(filters).sort({
       [sortBy]: sortOrder === "desc" ? -1 : 1,
     });
     if (!tasks || tasks.length === 0) {
